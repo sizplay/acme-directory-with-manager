@@ -1,0 +1,23 @@
+<html>
+
+<head>
+  <link rel='stylesheet' href='/vendor/bootstrap/dist/css/bootstrap.css' />
+  <title>Acme-directory-with-managers</title>
+</head>
+<div class='container'>
+  <ul class='nav nav-pills'>
+    <li class='nav-item'>
+      <a {% if path === '/' %} selected class='nav-link active' {% endif %} class='nav-link' href="/">Home</a>
+    </li>
+    <li>
+      <a {% if path === '/employees' %} selected class='nav-link active' {% endif %} class='nav-link' href="/employees">Employees</a>
+    </li>
+  </ul>
+
+</div>
+<div class='container'>
+  <h2>We have {{ employeeCount }} employees and {{ managerCount }} managers!</h2>
+  {% block content %} {% endblock %}
+</div>
+
+</html>

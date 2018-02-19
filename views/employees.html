@@ -1,0 +1,53 @@
+{% extends './layout.html' %} {% block content %}
+<hr/>
+<div style='display: flex; flex-wrap: wrap'>
+  <div style='width: 33%; background-color: #efefef;'>
+    <form method='POST' action='/employees' style='margin:10px;'>
+      <h5>Add an Employee</h5>
+      <strong>Employee Email (must be valid email):</strong>
+      <input class='form-control' name='email' />
+      <br />
+      <strong>Manager:</strong>
+      <select name='managerId' class='form-control'>
+        <option value='-1'>None</option>
+        {% for employee in employees %}
+        <option value={{ employee.id }}>
+          {{ employee.email }}
+        </option>
+        {% endfor %}
+      </select>
+      <button class='btn btn-primary' style='margin-top:10px'>Create</button>
+    </form>
+  </div>
+  <!--  -->
+  {% for employee in employees %}
+  <div style='width:33%; padding: 10px;'>
+
+    <form method='POST' action='/employees/{{ employee.id }}?_method=PUT' style='width: 90%'>
+      <strong>Email Provider:</strong> {{ employee.emailProvider }}
+      <br />
+      <strong>Employee name:</strong> {{ employee.name }}
+      <br />
+      <strong>Employee Email:</strong>
+      <input class='form-control' value={{ employee.email }} name='email' /> Manager Email:
+      <select name='managerId' class='form-control'>
+        <option value='-1'>None</option>
+        {% for employ in employees %}
+        <option {% if employee.managerId === employ.id %} selected {% endif %} value='{{ employ.id }}'>
+          {{ employ.email }}
+        </option>
+         {% endfor %}
+      </select>
+      <button class='btn btn-primary' style='margin-top:10px'>Update</button>
+    </form>
+    <form method='POST' action='/employees/{{ employee.id }}?_method=DELETE'>
+      <button class='btn btn-warning'>Delete {{ employee.id }}</button>
+    </form>
+    {{ employee.email }} manages
+    {% for manage in manages %}
+    <span class='badge badge-success'>{{ manage.email }}</span>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
