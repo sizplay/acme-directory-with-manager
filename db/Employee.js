@@ -4,7 +4,6 @@ const { Sequelize } = conn;
 const Employee = conn.define('employee', {
   email: {
     type: Sequelize.STRING,
-    // allowNull: true,
     validate: {
       isEmail: true,
       notEmpty: false
@@ -31,6 +30,10 @@ Employee.createFromForm = function (body) {
     delete body.managerId;
   }
   return this.create(body);
+};
+
+Employee.temp = function(body) {
+  console.log(body);
 };
 
 module.exports = Employee;

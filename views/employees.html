@@ -41,11 +41,11 @@
       <button class='btn btn-primary' style='margin-top:10px'>Update</button>
     </form>
     <form method='POST' action='/employees/{{ employee.id }}?_method=DELETE'>
-      <button class='btn btn-warning'>Delete {{ employee.id }}</button>
+      <button class='btn btn-warning'>Delete</button>
     </form>
     {{ employee.email }} manages
-    {% for manage in manages %}
-    <span class='badge badge-success'>{{ manage.email }}</span>
+    {% for manage in employees %} {% if employee.managerId === manage.id %}
+    <span class='badge badge-success'>{{ manage.email }}</span> {% endif %}
     {% endfor %}
   </div>
   {% endfor %}

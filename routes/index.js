@@ -12,11 +12,6 @@ router.use((req, res, next) => {
     })
   ])
     .then(([employees]) => {
-      const managesPeople = employees.reduce( (total, employee) => {
-        total.concat(employee);
-        return total;
-      });
-      console.log(managesPeople);
       const managercount = employees.reduce((total, employee) => {
         if (employee.managerId) total++;
         return total;
@@ -56,7 +51,7 @@ router.post('/employees', (req, res, next) => {
     .catch(next);
 });
 
-router.delete('/employees/', (req, res, next) => {
+router.delete('/employees/:id', (req, res, next) => {
   Employee.findById(req.params.id)
     .then(employee => employee.destroy())
     .then(() => res.redirect('/employees'))
