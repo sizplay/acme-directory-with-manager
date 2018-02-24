@@ -4,9 +4,10 @@ const { Sequelize } = conn;
 const Employee = conn.define('employee', {
   email: {
     type: Sequelize.STRING,
+    allowNull: false,
+    unique: true,
     validate: {
-      isEmail: true,
-      notEmpty: false
+      isEmail: true
     }
   }
 }, {
@@ -32,8 +33,15 @@ Employee.createFromForm = function (body) {
   return this.create(body);
 };
 
-Employee.temp = function(body) {
-  console.log(body);
+Employee.updateFromForm = function(id, body) {
+  if (body.managerId === '-1') {
+    body.managerId = null;
+  }
+  return Employee.findById(id)
+  .then( employee => {
+    Object.assign(employee, body);
+    return employee.save();
+  });
 };
 
 module.exports = Employee;

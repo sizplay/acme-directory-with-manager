@@ -3,15 +3,14 @@ const db = require('../db');
 const { Employee } = db.models;
 
 router.use((req, res, next) => {
-  Promise.all([
-    Employee.findAll({
-      include: [
-        { model: Employee, as: 'manages' },
-        { model: Employee, as: 'manager' }
-      ]
-    })
-  ])
-    .then(([employees]) => {
+  Employee.findAll({
+    include: [
+      { model: Employee, as: 'manages' },
+      { model: Employee, as: 'manager' }
+    ]
+  })
+    .then(employees => {
+      //res.send(employees);
       const managercount = employees.reduce((total, employee) => {
         if (employee.managerId) total++;
         return total;
@@ -29,15 +28,14 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/employees', (req, res, next) => {
-  Promise.all([
     Employee.findAll({
+      order: [['email', 'ASC']],
       include: [
         { model: Employee, as: 'manages' },
         { model: Employee, as: 'manager' }
       ]
     })
-  ])
-    .then(([ employees ]) => {
+    .then(employees => {
       res.render('employees', { employees });
     })
     .catch(next);
@@ -59,11 +57,7 @@ router.delete('/employees/:id', (req, res, next) => {
 });
 
 router.put('/employees/:id', (req, res, next) => {
-  Employee.findById(req.params.id)
-    .then(employee => {
-      Object.assign(employee, req.body);
-      return employee.save();
-    })
+  Employee.updateFromForm(req.params.id, req.body)
     .then(() => res.redirect('/employees'))
     .catch(next);
 });

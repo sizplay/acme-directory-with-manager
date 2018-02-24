@@ -43,11 +43,11 @@
     <form method='POST' action='/employees/{{ employee.id }}?_method=DELETE'>
       <button class='btn btn-warning'>Delete</button>
     </form>
-    {{ employee.email }} manages
-    {% for manage in employees %} {% if employee.managerId === manage.id %}
-    <span class='badge badge-success'>{{ manage.email }}</span> {% endif %}
-    {% endfor %}
+    {% if employee.manages.length %} {{employee.email}} manages {% for manages in employee.manages %}
+    <span class='badge badge-success'>{{ manages.email }}</span> {% endfor %}
+    {% endif %}
   </div>
   {% endfor %}
 </div>
+
 {% endblock %}

@@ -17,8 +17,7 @@ app.use('/', require('./routes'));
 const port = process.env.Port || 3000;
 app.listen(port, () => console.log(`listening on ${port}`));
 
-db.sync().then(() => {
-  db.seed();
-});
+db.sync()
+  .then(() => db.seed());
 
 module.exports = app;
